@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Google Auth Redirect</title>
+</head>
+<body>
+  <h1>Google Auth Redirect</h1>
+  <p>Nhập Bearer Token của bạn để truy cập:</p>
+  <form id="tokenForm">
+    <label for="token">Bearer Token:</label>
+    <input type="text" id="token" name="token" placeholder="Nhập token của bạn" required>
+    <button type="submit">Submit</button>
+  </form>
+  <div id="result" style="margin-top: 20px; color: red;"></div>
+
+  <script>
+    document.getElementById('tokenForm').addEventListener('submit', async (event) => {
+      event.preventDefault(); // Ngăn form reload trang
+      const token = document.getElementById('token').value;
+
+      // Kiểm tra token có tồn tại
+      if (!token) {
+        document.getElementById('result').textContent = "Vui lòng nhập token!";
+        return;
+      }
+
+      try {
+        // Lấy user-agent từ trình duyệt
+        const userAgent = navigator.userAgent;
+        console.log('ID Token đã được gửi .',userAgent)
+        console.log('ID Token đã được gửi .',token)
+        // Thực hiện yêu cầu GET với token và user-agent
+        const response = await fetch("http://localhost:8080/api/file/auth", {
+          method: "GET",
+          headers: {
+            Authorization: `Bearer ${token}`,
+            "User-Agent": userAgent,
+          },
+        });
+
+        if (response.ok) {
+          // Nếu token hợp lệ, điều hướng đến URL trả về (ở đây là Google Auth)
+          const data = await response.json();
+          if (data.authUrl) {
+            window.location.href = data.authUrl; // Điều hướng đến URL đăng nhập Google
+          } else {
+            document.getElementById('result').textContent = "Không tìm thấy URL xác thực trong phản hồi.";
+          }
+        } else {
+          // Nếu token không hợp lệ
+          const errorData = await response.json();
+          document.getElementById('result').textContent = `Lỗi: ${errorData.msg}`;
+        }
+      } catch (error) {
+        // Xử lý lỗi khác
+        document.getElementById('result').textContent = `Đã xảy ra lỗi: ${error.message}`;
+      }
+    });
+  </script>
+</body>
+</html>
