@@ -9,7 +9,7 @@ module.exports.requireAuth = async (req, res, next) => {
   const authHeader = req.headers['authorization'];
   const userAgent = req.headers['user-agent'];
   const token = authHeader && authHeader.split(' ')[1];
-  console.log("5", req.headers)
+  //console.log("5", req.headers)
   if (!token) {
     return res.status(401).json({
       "code": "error",

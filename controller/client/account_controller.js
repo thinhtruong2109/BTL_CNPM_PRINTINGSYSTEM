@@ -61,12 +61,12 @@ module.exports.loginController = async (req, res) => {
   })
 }
 
-module.exports.resetPasswordController = async (req, res) => {
+module.exports.RegisterController = async (req, res) => {
   const userAgent = req.headers['user-agent'];
   if(!userAgent){
     res.json({
       "code": "error",
-      "msg": "Mầy biến khỏi đây"
+      "msg": "Không hợp lệ"
     })
   }
   const isOtp = await Otp.findOne({
@@ -84,6 +84,16 @@ module.exports.resetPasswordController = async (req, res) => {
     email: req.body.email,
     otp: req.body.otp
   })
+
+  const existingAccount = await Account.findOne({ email: req.body.email });
+  if (existingAccount) {
+    res.json({
+      code: "error",
+      msg: "Email đã tồn tại trong hệ thống"
+    });
+    return;
+  }
+
   if(req.body.email && req.body.password && req.body.name && req.body.phone){
     req.body.role = "student"
     req.body.password = md5(req.body.password)
@@ -203,6 +213,7 @@ module.exports.otpController = async(req, res) => {
 }
 
 module.exports.getAccountController = async (req, res) => {
+  console.log(res.locals)
   const account = await Account.findOne({
     "_id": res.locals.account.id 
   }).select("name email phone avatar role")
