@@ -178,7 +178,7 @@ module.exports.fileController = async (req, res) => {
       link: `https://drive.google.com/file/d/${file.data.id}`,
       linkPath: filePath,
       pages: pages,
-      accountId: "res.locals.account.id"
+      accountId: res.locals.account.id
 
     };
     console.log("Number of pages in PDF:", pages); 

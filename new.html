@@ -1,63 +1,80 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Google Auth Redirect</title>
-</head>
-<body>
-  <h1>Google Auth Redirect</h1>
-  <p>Nhập Bearer Token của bạn để truy cập:</p>
-  <form id="tokenForm">
-    <label for="token">Bearer Token:</label>
-    <input type="text" id="token" name="token" placeholder="Nhập token của bạn" required>
-    <button type="submit">Submit</button>
-  </form>
-  <div id="result" style="margin-top: 20px; color: red;"></div>
-
-  <script>
-    document.getElementById('tokenForm').addEventListener('submit', async (event) => {
-      event.preventDefault(); // Ngăn form reload trang
-      const token = document.getElementById('token').value;
-
-      // Kiểm tra token có tồn tại
-      if (!token) {
-        document.getElementById('result').textContent = "Vui lòng nhập token!";
-        return;
+<html>
+  <head>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        margin: 0;
+        padding: 0;
+        background-color: #f9f9f9;
       }
-
-      try {
-        // Lấy user-agent từ trình duyệt
-        const userAgent = navigator.userAgent;
-        console.log('ID Token đã được gửi .',userAgent)
-        console.log('ID Token đã được gửi .',token)
-        // Thực hiện yêu cầu GET với token và user-agent
-        const response = await fetch("http://localhost:8080/api/file/auth", {
-          method: "GET",
-          headers: {
-            Authorization: `Bearer ${token}`,
-            "User-Agent": userAgent,
-          },
-        });
-
-        if (response.ok) {
-          // Nếu token hợp lệ, điều hướng đến URL trả về (ở đây là Google Auth)
-          const data = await response.json();
-          if (data.authUrl) {
-            window.location.href = data.authUrl; // Điều hướng đến URL đăng nhập Google
-          } else {
-            document.getElementById('result').textContent = "Không tìm thấy URL xác thực trong phản hồi.";
-          }
-        } else {
-          // Nếu token không hợp lệ
-          const errorData = await response.json();
-          document.getElementById('result').textContent = `Lỗi: ${errorData.msg}`;
-        }
-      } catch (error) {
-        // Xử lý lỗi khác
-        document.getElementById('result').textContent = `Đã xảy ra lỗi: ${error.message}`;
+      .container {
+        max-width: 600px;
+        margin: 50px auto;
+        background-color: #ffffff;
+        border: 1px solid #ddd;
+        border-radius: 8px;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        padding: 20px;
       }
-    });
-  </script>
-</body>
+      .header {
+        text-align: center;
+        margin-bottom: 30px;
+      }
+      .header img {
+        max-width: 100px;
+        margin-bottom: 20px;
+      }
+      .header h2 {
+        color: #333;
+        font-size: 22px;
+        margin: 0;
+      }
+      .otp-box {
+        text-align: center;
+        font-size: 36px;
+        font-weight: bold;
+        color: #4a4a4a;
+        background-color: #f4f4f8;
+        padding: 15px;
+        border-radius: 8px;
+        border: 1px solid #ddd;
+        margin: 20px auto;
+        letter-spacing: 2px;
+        width: fit-content;
+      }
+      .footer {
+        text-align: center;
+        font-size: 14px;
+        color: #666;
+        margin-top: 30px;
+      }
+      .footer strong {
+        color: #333;
+      }
+      .note {
+        text-align: center;
+        color: #888;
+        font-size: 12px;
+        margin-top: 20px;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <div class="header">
+        <img src="https://t3.ftcdn.net/jpg/01/05/33/22/360_F_105332215_nBSffj3yMoqb7RKK62Rf0pHKgUNdMHoz.jpg" alt="Termii Logo" />
+        <h2>Hi there!</h2>
+        <p>Please copy the OTP below and paste it in the verification page.</p>
+      </div>
+      <div class="otp-box">
+        ${text}
+      </div>
+      <div class="footer">
+        <p>This code expires in <strong>5 minutes</strong>. Please <strong>DO NOT SHARE</strong> this code with anyone!</p>
+      </div>
+      <div class="note">
+        <p>Need help? Contact <a href="mailto:thinh.truong21092004@hcmut.edu.vn">SwimTeam</a></p>
+      </div>
+    </div>
+  </body>
 </html>

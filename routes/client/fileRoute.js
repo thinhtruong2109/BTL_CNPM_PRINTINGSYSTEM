@@ -11,16 +11,14 @@ const MiddlewareAuth = require("../../middlewares/client/auth")
 // Cấu hình lưu file
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {
-    cb(null, "uploads/"); // Thư mục lưu trữ tệp
+    cb(null, "uploads/");
   },
   filename: (req, file, cb) => {
-    const originalName = `${Date.now()} - ${file.originalname}`;
-    const utf8Name = iconv.decode(Buffer.from(originalName, "latin1"), "utf8");
-    const newName = utf8Name.replace(/\s+/g, "-");
+    const utf8Name = iconv.decode(Buffer.from(file.originalname, "latin1"), "utf8");
+    const newName = utf8Name.replace(/\s+/g, "-"); // Chỉ thay khoảng trắng bằng dấu gạch ngang
     cb(null, newName);
   },
 });
-
 const upload = multer({
   storage,
   fileFilter: (req, file, cb) => {
