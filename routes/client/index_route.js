@@ -9,7 +9,7 @@ module.exports = (app) => {
   app.use('/api/account', accountRoute)
   app.use('/api/printer', MiddlewareAuth.requireAuth , printerRoute)
   app.use('/api/file' , fileRoute)
-  app.use('/api/e-wallet', MiddlewareAuth.requireAuth, eWalletRoute)
+  app.use('/api/e-wallet', eWalletRoute)
   app.use('/api/history', MiddlewareAuth.requireAuth, historyRoute)
   app.use('/api/field', MiddlewareAuth.requireAuth, fieldRoute)
 }
