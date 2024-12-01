@@ -60,38 +60,36 @@ const checkTransactionStatus = async (orderCode, retries = 100, delay = 1000) =>
 
 // Xử lý hook từ PayOS
 module.exports.ReceiveHookController = async (req, res) => {
-  // try {
-  //   console.log("ReceiveHookController được gọi");
-  //   const orderCode = req.body?.data?.orderCode;
-  //   const status = req.body?.success ? "success" : "failed";
+  try {
+    console.log("ReceiveHookController được gọi");
+    const orderCode = req.body?.data?.orderCode;
+    const status = req.body?.success ? "success" : "failed";
 
-  //   const transaction = await Transaction.findOne({ orderCode });
-  //   if (!transaction) {
-  //     console.log("Không tìm thấy giao dịch:", orderCode);
-  //     return res.status(404).json({
-  //       code: "error",
-  //       msg: "Giao dịch không tồn tại",
-  //     });
-  //   }
+    const transaction = await Transaction.findOne({ orderCode });
+    if (!transaction) {
+      console.log("Không tìm thấy giao dịch:", orderCode);
+      return res.status(404).json({
+        code: "error",
+        msg: "Giao dịch không tồn tại",
+      });
+    }
 
-  //   transaction.status = status;
-  //   await transaction.save();
-  //   console.log("Giao dịch đã được cập nhật:", transaction);
+    transaction.status = status;
+    await transaction.save();
+    console.log("Giao dịch đã được cập nhật:", transaction);
 
-  //   return res.status(200).json({
-  //     code: "success",
-  //     msg: "Trạng thái giao dịch được cập nhật",
-  //   });
-  // } catch (error) {
-  //   console.error("Lỗi trong ReceiveHookController:", error);
-  //   return res.status(500).json({
-  //     code: "error",
-  //     msg: "Lỗi máy chủ",
-  //   });
-  // }
-  console.log (req.body) ;
-    console.log("--------------------------------")
-    res.json();
+    return res.status(200).json({
+      code: "success",
+      msg: "Trạng thái giao dịch được cập nhật",
+    });
+  } catch (error) {
+    console.error("Lỗi trong ReceiveHookController:", error);
+    return res.status(500).json({
+      code: "error",
+      msg: "Lỗi máy chủ",
+    });
+  }
+  
 };
 
 // Xử lý thanh toán
