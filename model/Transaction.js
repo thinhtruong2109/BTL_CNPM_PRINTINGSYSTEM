@@ -15,4 +15,4 @@ const Transaction = mongoose.model(
     'transactions'
   )
   
-  module.exports = Transaction
+module.exports = Transaction

@@ -1,7 +1,7 @@
 const EWallet = require("../../model/E-wallets");
 require("dotenv").config();
 const jwt = require("jsonwebtoken");
-const Field = require("../../model/Field");
+const BuyPaperLog = require("../../model/BuyPaperLog");
 const Account = require("../../model/Account");
 const History = require("../../model/History");
 const payOS = require("../../payos");
@@ -37,10 +37,11 @@ module.exports.eWalletController = async (req, res) => {
 };
 
 // Kiểm tra trạng thái giao dịch
-const checkTransactionStatus = async (orderCode, retries = 100, delay = 1000) => {
+const checkTransactionStatus = async (orderCode, retries = 10, delay = 1000) => {
   for (let i = 0; i < retries; i++) {
     try {
       const transaction = await Transaction.findOne({ orderCode });
+      console.log(i,"    ",transaction.status);
       if (transaction && transaction.status === "success") {
         return true;
       }
@@ -50,6 +51,10 @@ const checkTransactionStatus = async (orderCode, retries = 100, delay = 1000) =>
     }
     await new Promise((resolve) => setTimeout(resolve, delay));
   }
+  await Transaction.updateOne(
+    { orderCode },
+    { status: "out_of_time" }
+   );
   return false;
 };
 
@@ -91,8 +96,7 @@ module.exports.PaymentController = async (req, res) => {
   try {
     const accountId = res.locals.account.id;
 
-    switch (req.body.type) {
-      case "add": {
+
         const orderCode = Number(String(Date.now()).slice(-6)); // Tạo mã giao dịch ngẫu nhiên
         const amount = +req.body.amount;
 
@@ -142,35 +146,9 @@ module.exports.PaymentController = async (req, res) => {
         }
 
         return; // Kết thúc hàm sau khi xử lý xong
-      }
+      
 
-      case "sub": {
-        const eWallet = await EWallet.findOne({ accountId });
-
-        if (!eWallet || eWallet.balance < parseInt(req.body.amount)) {
-          return res.json({
-            code: "error",
-            msg: "Không đủ số dư",
-          });
-        }
-
-        await EWallet.updateOne(
-          { accountId },
-          { $inc: { balance: -parseInt(req.body.amount) } }
-        );
-
-        return res.json({
-          code: "success",
-          msg: "Thanh toán thành công",
-        });
-      }
-
-      default:
-        return res.json({
-          code: "error",
-          msg: "Loại giao dịch không hợp lệ",
-        });
-    }
+      
   } catch (error) {
     console.error("Lỗi trong PaymentController:", error);
     return res.status(500).json({
@@ -216,9 +194,9 @@ module.exports.postBuyPaper = async (req, res) => {
       { balance: balanceNew, balancePaper: eWallet.balancePaper + balancePaper }
     );
 
-    const record = new Field({
+    const record = new BuyPaperLog({
       accountId: res.locals.account.id,
-      transaction: "Buy paper",
+      transaction: "Mua giấy",
       amount: balancePaper * 500,
       balance: balanceNew,
       historyId: "",

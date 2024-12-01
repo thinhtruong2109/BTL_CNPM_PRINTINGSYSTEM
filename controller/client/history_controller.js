@@ -3,7 +3,7 @@ const History = require("../../model/History")
 
 module.exports.getHistoryController = async (req, res) => {
   const account = res.locals.account
-  historys = await History.find({
+  const historys = await History.find({
     "accountId": account.id
   })
   res.json({

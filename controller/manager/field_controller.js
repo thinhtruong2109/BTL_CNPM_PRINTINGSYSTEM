@@ -1,4 +1,4 @@
-const Field = require("../../model/Field")
+const BuyPaperLog = require("../../model/BuyPaperLog");
 const { find } = require("../../model/Printer")
 
 module.exports.getFieldController = async (req, res) => {
@@ -9,10 +9,10 @@ module.exports.getFieldController = async (req, res) => {
   if(req.query.transaction){
     find.transaction = req.query.transaction
   }
-  const field = await Field.find(find)
+  const buypaperlog = await BuyPaperLog.find(find)
   res.json({
     "code":"success",
-    "msg": "Lấy field thành công",
-    "field": field,
+    "msg": "Lấy buypaperlog thành công",
+    "buypaperlog": buypaperlog,
   })
 }

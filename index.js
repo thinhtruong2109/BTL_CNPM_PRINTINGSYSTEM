@@ -7,7 +7,7 @@ const routeClient = require("./routes/client/index_route")
 const bodyParser = require('body-parser')
 const cookieParser = require('cookie-parser');
 const History = require('./model/History');
-
+require('./controller/manager/changePaper_controller');
 const app = express()
 
 const port = process.env.PORT;

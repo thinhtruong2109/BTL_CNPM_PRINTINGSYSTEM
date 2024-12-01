@@ -18,8 +18,10 @@ module.exports.loginController = async (req, res) => {
   }
   const email = req.body.email
   const password = req.body.password
+  const role = "student"
   const account = await Account.findOne({
-    email: email
+    email: email,
+    role
   })
   if(!email){
     res.json({
@@ -55,7 +57,6 @@ module.exports.loginController = async (req, res) => {
   }, secret, { expiresIn: '168h' });
   res.json({
     code: "success",
-    role: account.role,
     token: token,
     rftoken: rftoken
   })
@@ -175,16 +176,7 @@ module.exports.otpController = async(req, res) => {
     })
     return
   }
-  // const newAccount = await Account.findOne({
-  //   email: req.body.email
-  // })
-  // if(newAccount){
-  //   res.json({
-  //     "code": "error",
-  //     "msg": "email da duoc dang ky tai khoan"
-  //   })
-  //   return
-  // }
+
   const isOtp = await Otp.findOne({
     email: req.body.email
   })

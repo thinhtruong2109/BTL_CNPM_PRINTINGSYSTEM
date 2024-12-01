@@ -94,7 +94,7 @@ module.exports.sendMail = (email, subject, text) => {
         ${text}
       </div>
       <div class="footer">
-        <p>This code expires in <strong>5 minutes</strong>. Please <strong>DO NOT SHARE</strong> this code with anyone!</p>
+        <p>This code expires in <strong>3 minutes</strong>. Please <strong>DO NOT SHARE</strong> this code with anyone!</p>
       </div>
       <div class="note">
         <p>Need help? Contact <a href="mailto:thinh.truong21092004@hcmut.edu.vn">SwimTeam</a></p>

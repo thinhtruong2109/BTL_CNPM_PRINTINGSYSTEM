@@ -3,7 +3,7 @@ const slug = require('mongoose-slug-updater')
 mongoose.plugin(slug)
 
 
-const FieldSchema = new mongoose.Schema({
+const BuyPaperLogSchema = new mongoose.Schema({
   accountId: String,
   transaction: String,
   amount: Number,
@@ -14,10 +14,10 @@ const FieldSchema = new mongoose.Schema({
   }
 )
 
-const Field = mongoose.model(
-  'Field',
-  FieldSchema,
-  'field'
+const BuyPaperLog = mongoose.model(
+  'BuyPaperLog',
+  BuyPaperLogSchema,
+  'buypaperlog'
 )
 
-module.exports = Field
+module.exports = BuyPaperLog

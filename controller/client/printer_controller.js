@@ -3,7 +3,7 @@ const Account = require("../../model/Account")
 const EWallet = require("../../model/E-wallets")
 const File = require("../../model/File")
 const History = require("../../model/History")
-const Field = require("../../model/Field")
+const BuyPaperLog = require("../../model/BuyPaperLog");
 
 
 module.exports.printerController = async (req, res) => {
@@ -45,6 +45,7 @@ module.exports.getDetailController = async (req, res) => {
 module.exports.postPrinterController = async (req, res) => {
   const PrinterId = req.body.printerId
   const FileId = req.body.fileId
+  const PrintingSize = req.body.printingSize
   const file = await File.findOne({
     "_id": FileId
   })
@@ -78,17 +79,51 @@ module.exports.postPrinterController = async (req, res) => {
     })
     return
   }
-  let paper = parseInt((file.pages + 1)/2)
+
+  let paper =0;
+
+
   if(printer.type == "A3"){
-    paper = file.pages
+    if(PrintingSize== "A3")
+      {
+        paper = parseInt((file.pages + 1)/2)
+        paper = paper * 2
+      }
+    if(PrintingSize== "A4")
+      {
+        paper = parseInt((file.pages + 3)/4)
+        paper = paper * 2
+      }
+    if(eWallet.balancePaper < paper){
+      res.json({
+        "code": "error",
+        "msg": "Bạn nghèo tôi cũng nghèo cố gắng nạp tiền vào để in nhe"
+      })
+      return
+    }
   }
-  if(eWallet.balancePaper < paper){
-    res.json({
-      "code": "error",
-      "msg": "Bạn nghèo tôi cũng nghèo cố gắng nạp tiền vào để in nhe"
-    })
-    return
+
+
+  if(printer.type == "A4"){
+    paper = parseInt((file.pages + 1)/2)
+    if(PrintingSize== "A3")
+    {
+      res.json({
+        "code": "error",
+        "msg": "Máy in khổ A4 không hỗ trợ in khổ A3"
+      })
+      return
+    }
+    if(eWallet.balancePaper < paper){
+      res.json({
+        "code": "error",
+        "msg": "Bạn nghèo tôi cũng nghèo cố gắng nạp tiền vào để in nhe"
+      })
+      return
+    }
   }
+
+
   balancePaperNew = eWallet.balancePaper - paper
   await EWallet.updateOne({
     "_id": eWallet.id
@@ -107,7 +142,7 @@ module.exports.postPrinterController = async (req, res) => {
     pages: file.pages,
     totle: paper,
     balancePaperNew: balancePaperNew,
-    linkPath: file.linkPath,
+    linkPath: file.link,
     status: "doing",
     printerId: printer.id
   }
