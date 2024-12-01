@@ -37,7 +37,7 @@ module.exports.eWalletController = async (req, res) => {
 };
 
 // Kiểm tra trạng thái giao dịch
-const checkTransactionStatus = async (orderCode, retries = 10, delay = 1000) => {
+const checkTransactionStatus = async (orderCode, retries = 100, delay = 1000) => {
   for (let i = 0; i < retries; i++) {
     try {
       const transaction = await Transaction.findOne({ orderCode });
