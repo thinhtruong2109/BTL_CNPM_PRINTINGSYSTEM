@@ -6,7 +6,7 @@ mongoose.plugin(slug)
 const EWalletSchema = new mongoose.Schema({
   accountId: String,
   balance: Number,
-  mssv: String,
+  ms: String,
   balancePaper: Number,
 },{
   timestamps: true,

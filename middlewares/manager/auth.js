@@ -30,7 +30,7 @@ module.exports.requireAuth = async (req, res, next) => {
       else {
         return res.status(403).json({
           "code": "error",
-          "msg": "Token không hợp lệ"
+          "msg": "Token không hợp lệ do không đúng ROLE"
         });
       }
     }

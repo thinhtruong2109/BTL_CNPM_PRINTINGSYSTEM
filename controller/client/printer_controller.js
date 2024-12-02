@@ -105,7 +105,7 @@ module.exports.postPrinterController = async (req, res) => {
     cs: printer.cs,
     location: printer.location,
     pages: file.pages,
-    totle: paper,
+    total: paper,
     balancePaperNew: balancePaperNew,
     linkPath: file.linkPath,
     status: "doing",

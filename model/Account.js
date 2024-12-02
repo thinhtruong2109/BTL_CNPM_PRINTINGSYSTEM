@@ -7,7 +7,7 @@ const AccountSchema = new mongoose.Schema({
   email: String,
   password: String,
   phone: String,
-  avatar: String,
+  ms: String,
   role: String,
 },{
   timestamps: true,

@@ -1,4 +1,3 @@
-const File = require("../../model/File")
 const History = require("../../model/History")
 
 module.exports.getHistoryController = async (req, res) => {
@@ -23,4 +22,5 @@ module.exports.deleteHistoryManyController = async (req, res) => {
     "msg": "xoa lich su thanh cong",
   })
 }
+
 

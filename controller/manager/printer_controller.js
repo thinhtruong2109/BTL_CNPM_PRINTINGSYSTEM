@@ -18,9 +18,6 @@ module.exports.getPrintStatusController = async (req, res) => {
   if(req.query.cs){
     find.cs = parseInt(req.query.cs)
   }
-  if(req.query.price){
-    sort.price = parseInt(req.query.price)
-  }
   const printer = await Printer.find(find).sort(sort)
   res.json({
     code: "success",
@@ -48,7 +45,7 @@ module.exports.getDetailController = async (req, res) => {
   })
 }
 
-module.exports.patchChangeMuiltiPrintController = async (req, res) => {
+module.exports.changeStatusByIds = async (req, res) => {
   IDs = req.body.ids
   await Printer.updateMany({
     "_id": IDs,
@@ -61,7 +58,7 @@ module.exports.patchChangeMuiltiPrintController = async (req, res) => {
   })
 }
 
-module.exports.patchChangePrinterController = async (req, res) => {
+module.exports.changePrinterInfoByID = async (req, res) => {
   const id = req.params.id
   if(!id){
     res.json({
