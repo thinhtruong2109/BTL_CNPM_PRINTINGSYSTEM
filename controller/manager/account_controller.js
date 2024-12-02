@@ -92,8 +92,6 @@ module.exports.loginController = async (req, res) => {
   })
 }
 
-<<<<<<< Updated upstream
-=======
 module.exports.RegisterController = async (req, res) => {
   const userAgent = req.headers['user-agent'];
   if(!userAgent){
