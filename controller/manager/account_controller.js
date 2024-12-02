@@ -250,14 +250,14 @@ module.exports.otpController = async(req, res) => {
   })
 }
 
->>>>>>> Stashed changes
+
 module.exports.getAccountController = async (req, res) => {
 
 
 
   const account = await Account.findOne({
     "_id": res.locals.account.id 
-  }).select("name email phone avatar role")
+  })
   res.json({
     "code": "success",
     "msg": "Lấy account thành công",
@@ -277,11 +277,10 @@ module.exports.getAccountStudentController = async (req, res) => {
   const account = await Account.findOne({
     "_id": id,
     "role": "student"
-<<<<<<< Updated upstream
-  }).select("name email")
-=======
+
+
   }).select("name email phone ms role")
->>>>>>> Stashed changes
+
   res.json({
     "code": "error",
     "msg": "Lấy ra account thành công",
@@ -292,11 +291,10 @@ module.exports.getAccountStudentController = async (req, res) => {
 module.exports.getAllAccountController = async (req, res) => {
   const accounts = await Account.find({
     "role": "student"
-<<<<<<< Updated upstream
-  }).select("name id phone email")
-=======
+
+
   }).select("name email phone ms role")
->>>>>>> Stashed changes
+
   res.json({
     "code": "success",
     "accounts": accounts
