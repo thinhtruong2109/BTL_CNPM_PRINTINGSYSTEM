@@ -43,7 +43,7 @@ module.exports.loginController = async (req, res) => {
   if(!userAgent){
     res.json({
       "code": "error",
-      "msg": "Mầy biến khỏi đây"
+      "msg": "Không có USER_AGENT"
     })
     return
   }
@@ -54,19 +54,19 @@ module.exports.loginController = async (req, res) => {
   })
   if(!email){
     res.json({
-      code: "email khong ton tai"
+      code: "Email không tồn tại"
     })
     return
   }
   if(!account){
     res.json({
-      code: "account khong ton tai"
+      code: "Account không tồn tại"
     })
     return
   }
   if(md5(password) != account.password){
     res.json({
-      code: "mat khau khong chinh xac"
+      code: "Mật khẩu không chính xác"
     })
     return
   }
@@ -107,7 +107,7 @@ module.exports.RegisterController = async (req, res) => {
   if(!isOtp){
     res.json({
       "code": "error",
-      "msg": "otp không hợp lệ"
+      "msg": "OTP không hợp lệ"
     })
     return
   }

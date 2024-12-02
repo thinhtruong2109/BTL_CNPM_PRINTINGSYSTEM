@@ -6,7 +6,7 @@ module.exports.postPrintController = async (req, res) => {
   await record.save()
   res.json({
     code: "success",
-    msg: "tao may in thanh cong",
+    msg: "Tạo máy in thành công",
   })
 } 
 
@@ -21,7 +21,7 @@ module.exports.getPrintStatusController = async (req, res) => {
   const printer = await Printer.find(find).sort(sort)
   res.json({
     code: "success",
-    msg: "lay may in thanh cong",
+    msg: "Lấy máy in thành công",
     printer: printer
   })
 }
@@ -32,7 +32,7 @@ module.exports.getDetailController = async (req, res) => {
   if(!id){
     res.json({
       "code": "error",
-      "msg": "chua co id"
+      "msg": "Chưa có ID máy in"
     })
   }
   const printer = await Printer.findOne({
@@ -40,7 +40,7 @@ module.exports.getDetailController = async (req, res) => {
   })
   res.json({
     "code": "error",
-    "msg": "lay thong cong may in",
+    "msg": "Lấy thành công máy in",
     "printer": printer
   })
 }
@@ -63,7 +63,7 @@ module.exports.changePrinterInfoByID = async (req, res) => {
   if(!id){
     res.json({
       "code": "error",
-      "msg": "id m dau"
+      "msg": "ID không tồn tại"
     })
     return
   }
@@ -72,7 +72,7 @@ module.exports.changePrinterInfoByID = async (req, res) => {
   }, req.body)
   res.json({
     "code": "success",
-    "msg": "update may in thanh cong"
+    "msg": "Update máy in thanh công"
   })
 }
 
@@ -81,7 +81,7 @@ module.exports.deletePrinterController = async (req, res) => {
   if(!id){
     res.json({
       "code": "error",
-      "msg": "id m dau"
+      "msg": "Không có ID"
     })
     return
   }
@@ -90,6 +90,6 @@ module.exports.deletePrinterController = async (req, res) => {
   })
   res.json({
     "code": "success",
-    "msg": "xoa may in thanh cong"
+    "msg": "Xóa máy in thành công"
   })
 }

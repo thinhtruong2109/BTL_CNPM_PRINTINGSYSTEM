@@ -18,7 +18,7 @@ module.exports.changeUpdateTimeController = async (req , res) => {
     startCronJob(updateTimebyMonth,incrementPaperNum)
     res.json({
         "code": "success",
-        "msg": "Thay doi gia tri thoi gian thanh cong"
+        "msg": "Thay đổi thời gian free giấy thành công"
       })
     
 }
@@ -28,7 +28,7 @@ module.exports.changePaperController = async (req, res) => {
     startCronJob(updateTimebyMonth,incrementPaperNum)
     res.json({
         "code": "success",
-        "msg": "Thay doi gia tri giay free mac dinh thanh cong"
+        "msg": "Thay đổi giá trị Token Paper free thành công"
       })
 }
 
@@ -43,7 +43,7 @@ const startCronJob = (updateTimebyMonth, incrementPaperNum) => {
     }
   
     // Khởi tạo cronJob mới
-    currentCronJob = cron.schedule(`*/${updateTimebyMonth} * * * * *`, async () => {
+    currentCronJob = cron.schedule(`0 0 1 */${updateTimebyMonth} *`, async () => {
       try {
         const incrementAmount = incrementPaperNum;
         const updatedWallets = await EWallet.updateMany(

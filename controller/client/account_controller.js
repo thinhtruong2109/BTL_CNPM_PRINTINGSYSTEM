@@ -47,7 +47,7 @@ module.exports.loginController = async (req, res) => {
   if(!userAgent){
     res.json({
       "code": "error",
-      "msg": "Mầy biến khỏi đây"
+      "msg": "Không có user-agent"
     })
     return
   }
@@ -111,7 +111,7 @@ module.exports.RegisterController = async (req, res) => {
   if(!isOtp){
     res.json({
       "code": "error",
-      "msg": "otp không hợp lệ"
+      "msg": "OTP không hợp lệ"
     })
     return
   }
@@ -211,27 +211,18 @@ module.exports.otpController = async(req, res) => {
   if(!req.body.email){
     res.json({
       "code": "error",
-      "msg": "email mầy đâu thằng ngu"
+      "msg": "Chưa nhập email"
     })
     return
   }
-  // const newAccount = await Account.findOne({
-  //   email: req.body.email
-  // })
-  // if(newAccount){
-  //   res.json({
-  //     "code": "error",
-  //     "msg": "email da duoc dang ky tai khoan"
-  //   })
-  //   return
-  // }
+
   const isOtp = await Otp.findOne({
     email: req.body.email
   })
   if(isOtp){
     res.json({
       "code": "error",
-      "msg": "otp da duoc gui truoc do"
+      "msg": "OTP da duoc gui truoc do"
     })
     return
   }
@@ -248,7 +239,7 @@ module.exports.otpController = async(req, res) => {
   sendMail(req.body.email, subject, text)
   res.json({
     "code": "success",
-    "msg": "Đã gửi otp thành công"
+    "msg": "Đã gửi OTP thành công"
   })
 }
 

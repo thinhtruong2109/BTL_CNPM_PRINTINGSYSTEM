@@ -33,7 +33,7 @@ module.exports.getHistoryByMonthYearController = async (req, res) => {
     if (!year || year < 1) {
       return res.status(400).json({
         code: "error",
-        msg: "Year is required and must be a positive number."
+        msg: "Năm phải là số dương."
       });
     }
 
@@ -50,7 +50,7 @@ module.exports.getHistoryByMonthYearController = async (req, res) => {
     } else {
       return res.status(400).json({
         code: "error",
-        msg: "Month must be between 0 and 12."
+        msg: "Tháng phải thuộc 1->12 hoặc bằng 0."
       });
     }
 
