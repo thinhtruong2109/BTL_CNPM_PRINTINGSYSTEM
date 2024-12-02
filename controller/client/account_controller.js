@@ -7,12 +7,47 @@ const { sendMail } = require("../../helper/sendMail_helper");
 const EWallet = require("../../model/E-wallets");
 require('dotenv').config();
 const secret = process.env.JWT_SECRET; 
+
+
+const getMaxMsByPrefix = async () => {
+  const result = await Account.aggregate([
+    {
+      $match: {
+        ms: { $regex: /^(SV|AD)\d+$/ } // Lọc các giá trị ms hợp lệ
+      }
+    },
+    {
+      $project: {
+        prefix: { $substr: ["$ms", 0, 2] }, // Lấy 2 ký tự đầu (tiền tố)
+        number: { $toInt: { $substr: ["$ms", 2, -1] } } // Chuyển phần số còn lại thành số
+      }
+    },
+    {
+      $group: {
+        _id: "$prefix", // Nhóm theo tiền tố
+        maxNumber: { $max: "$number" } // Lấy số lớn nhất trong từng nhóm
+      }
+    }
+  ]);
+
+  const maxMs = {
+    SV: 0, // Mặc định là 0 nếu không tìm thấy
+    AD: 0
+  };
+
+  result.forEach((item) => {
+    maxMs[item._id] = item.maxNumber;
+  });
+
+  return maxMs;
+};
+
 module.exports.loginController = async (req, res) => {
   const userAgent = req.headers['user-agent'];
   if(!userAgent){
     res.json({
       "code": "error",
-      "msg": "Mầy biến khỏi đây"
+      "msg": "Không có user-agent"
     })
     return
   }
@@ -76,7 +111,7 @@ module.exports.RegisterController = async (req, res) => {
   if(!isOtp){
     res.json({
       "code": "error",
-      "msg": "otp không hợp lệ"
+      "msg": "OTP không hợp lệ"
     })
     return
   }
@@ -97,13 +132,18 @@ module.exports.RegisterController = async (req, res) => {
   if(req.body.email && req.body.password && req.body.name && req.body.phone){
     req.body.role = "student"
     req.body.password = md5(req.body.password)
-    req.body.avatar = ""
-    const newAccount = new Account(req.body)
+    const maxMs = await getMaxMsByPrefix();
+    const MS = `SV${maxMs.SV + 1}`; 
+
+    const newAccount = new Account({
+      ...req.body, // Sao chép tất cả các trường từ req.body
+      ms: MS      // Thêm trường ms với giá trị MS
+    });
     const newEWallet = new EWallet({
       "accountId": newAccount.id,
       "balance": 0,
       "balancePaper": 0,
-      "mssv": ""
+      "ms": MS
     })
     await newAccount.save()
     await newEWallet.save()
@@ -171,27 +211,18 @@ module.exports.otpController = async(req, res) => {
   if(!req.body.email){
     res.json({
       "code": "error",
-      "msg": "email mầy đâu thằng ngu"
+      "msg": "Chưa nhập email"
     })
     return
   }
-  // const newAccount = await Account.findOne({
-  //   email: req.body.email
-  // })
-  // if(newAccount){
-  //   res.json({
-  //     "code": "error",
-  //     "msg": "email da duoc dang ky tai khoan"
-  //   })
-  //   return
-  // }
+
   const isOtp = await Otp.findOne({
     email: req.body.email
   })
   if(isOtp){
     res.json({
       "code": "error",
-      "msg": "otp da duoc gui truoc do"
+      "msg": "OTP da duoc gui truoc do"
     })
     return
   }
@@ -208,15 +239,18 @@ module.exports.otpController = async(req, res) => {
   sendMail(req.body.email, subject, text)
   res.json({
     "code": "success",
-    "msg": "Đã gửi otp thành công"
+    "msg": "Đã gửi OTP thành công"
   })
 }
 
 module.exports.getAccountController = async (req, res) => {
   console.log(res.locals)
+
+
+  
   const account = await Account.findOne({
     "_id": res.locals.account.id 
-  }).select("name email phone avatar role")
+  })
   res.json({
     "code": "success",
     "msg": "Lấy account thành công",

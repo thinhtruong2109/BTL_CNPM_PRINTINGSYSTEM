@@ -2,6 +2,7 @@ const printerRoute = require("./printerRoute")
 const accountRoute = require("./accountRoute")
 const fileRoute = require("./fileRoute")
 const historyRoute = require("./historyRoute")
+const changePaperRoute = require("./changePaperRoute")
 const systemPrefix = require("../../config/system")
 const middlewares = require("../../middlewares/manager/auth")
 module.exports = (app) => {
@@ -9,4 +10,5 @@ module.exports = (app) => {
   app.use(`${systemPrefix.prefixManager}/api/history`, middlewares.requireAuth, historyRoute)
   app.use(`${systemPrefix.prefixManager}/api/printer`,middlewares.requireAuth, printerRoute)
   app.use(`${systemPrefix.prefixManager}/api/file`,middlewares.requireAuth, fileRoute)
+  app.use(`${systemPrefix.prefixManager}/api/changePaperRoute`,middlewares.requireAuth, changePaperRoute)
 }

@@ -5,12 +5,13 @@ mongoose.plugin(slug)
 const PrinterSchema = new mongoose.Schema({
   cs: Number,
   brand: String,
-  modle: String,
+  model: String,
   description: String,
   location: String,
   status: String,
   type: String,
-  deleted: Boolean
+  deleted: Boolean,
+  price: Number 
 },{
   timestamps: true,
   }

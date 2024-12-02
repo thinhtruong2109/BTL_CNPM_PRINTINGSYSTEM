@@ -218,7 +218,7 @@ module.exports.postBuyPaper = async (req, res) => {
 
     const record = new Field({
       accountId: res.locals.account.id,
-      transaction: "Buy paper",
+      transaction: "Mua giấy",
       amount: balancePaper * 500,
       balance: balanceNew,
       historyId: "",

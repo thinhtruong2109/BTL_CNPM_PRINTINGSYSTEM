@@ -21,7 +21,7 @@ module.exports.requireAuth = async (req, res, next) => {
     if (err) {
       return res.status(401).json({
         "code": "error",
-        "msg": "Token không hợp lệ 1"
+        "msg": "Token không hợp lệ"
       });
     } else {
 
@@ -35,7 +35,7 @@ module.exports.requireAuth = async (req, res, next) => {
       }
       else {return res.status(403).json({
         "code": "error",
-        "msg": "Token không hợp lệ 2"
+        "msg": "Token không hợp lệ do không đúng ROLE"
       });}
     }
   });

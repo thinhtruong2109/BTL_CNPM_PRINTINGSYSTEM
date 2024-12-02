@@ -11,5 +11,5 @@ module.exports = (app) => {
   app.use('/api/file' , fileRoute)
   app.use('/api/e-wallet', eWalletRoute)
   app.use('/api/history', MiddlewareAuth.requireAuth, historyRoute)
-  app.use('/api/field', MiddlewareAuth.requireAuth, fieldRoute)
+  app.use('/api/buypaperlog', MiddlewareAuth.requireAuth, fieldRoute)
 }

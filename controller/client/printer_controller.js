@@ -29,7 +29,7 @@ module.exports.getDetailController = async (req, res) => {
   if(!id){
     res.json({
       "code": "error",
-      "msg": "chua co id"
+      "msg": "Chưa có ID máy in"
     })
   }
   const printer = await Printer.findOne({
@@ -37,7 +37,7 @@ module.exports.getDetailController = async (req, res) => {
   })
   res.json({
     "code": "error",
-    "msg": "lay thong cong may in",
+    "msg": "Lấy thành công máy in",
     "printer": printer
   })
 }
@@ -51,7 +51,7 @@ module.exports.postPrinterController = async (req, res) => {
   if(!file){
     res.json({
       "code": "error",
-      "msg": "không tìm thấy file"
+      "msg": "Không tìm thấy file"
     })
     return
   }
@@ -63,7 +63,7 @@ module.exports.postPrinterController = async (req, res) => {
   if (!printer){
     res.json({
       "code": "error",
-      "msg": "không tìm thấy may in"
+      "msg": "Không tìm thấy máy in"
     })
     return
   }
@@ -74,7 +74,7 @@ module.exports.postPrinterController = async (req, res) => {
   if (!eWallet) {
     res.json({
       "code": "error",
-      "msg": "Khong tim thay e-wallet"
+      "msg": "Không tìm thấy e-wallet"
     })
     return
   }
@@ -85,7 +85,7 @@ module.exports.postPrinterController = async (req, res) => {
   if(eWallet.balancePaper < paper){
     res.json({
       "code": "error",
-      "msg": "Bạn nghèo tôi cũng nghèo cố gắng nạp tiền vào để in nhe"
+      "msg": "Không đủ Token Paper để in"
     })
     return
   }
@@ -105,7 +105,7 @@ module.exports.postPrinterController = async (req, res) => {
     cs: printer.cs,
     location: printer.location,
     pages: file.pages,
-    totle: paper,
+    total: paper,
     balancePaperNew: balancePaperNew,
     linkPath: file.linkPath,
     status: "doing",

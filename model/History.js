@@ -7,7 +7,7 @@ const HistorySchema = new mongoose.Schema({
   location: String,
   price: Number,
   pages: Number,
-  totle: Number,
+  total: Number,
   balancePaperNew: Number,
   linkPath: String,
   status: String,
