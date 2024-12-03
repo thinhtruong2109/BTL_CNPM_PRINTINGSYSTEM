@@ -58,16 +58,15 @@ module.exports.loginController = async (req, res) => {
     })
     return
   }
-  if (account.role != "manager"){
-    res.json({
-      code: "Role không tồn tại"
-    })
-    return
-  }
-
   if(!account){
     res.json({
       code: "Account không tồn tại"
+    })
+    return
+  }
+  if (account.role != "manager"){
+    res.json({
+      code: "Role không tồn tại"
     })
     return
   }
