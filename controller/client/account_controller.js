@@ -62,6 +62,12 @@ module.exports.loginController = async (req, res) => {
     })
     return
   }
+  if (account.role != "student"){
+    res.json({
+      code: "Role không tồn tại"
+    })
+    return
+  }
   if(!account){
     res.json({
       code: "account khong ton tai"
@@ -250,6 +256,7 @@ module.exports.getAccountController = async (req, res) => {
   
   const account = await Account.findOne({
     "_id": res.locals.account.id 
+
   })
   res.json({
     "code": "success",
