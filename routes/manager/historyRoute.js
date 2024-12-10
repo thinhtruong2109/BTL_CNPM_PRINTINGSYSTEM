@@ -4,6 +4,6 @@ const router = express.Router()
 const controller = require("../../controller/manager/history_controller")
 
 router.get("/", controller.getHistoryController)
-router.get("/log", controller.getHistoryByMonthYearController);
+router.post("/log", controller.getHistoryByMonthYearController);
 
 module.exports = router
