@@ -26,10 +26,7 @@ module.exports.requireAuth = async (req, res, next) => {
     } else {
 
       res.locals.account = decoded.accountToken;
-      // console.log(decoded.accountToken.key)
-      // console.log(md5(userAgent))
-      // console.log(decoded.accountToken.role)
-      // console.log("student")
+
       if(decoded.accountToken.role === "student"){
         next()
       }

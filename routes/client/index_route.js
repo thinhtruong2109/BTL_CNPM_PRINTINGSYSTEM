@@ -4,6 +4,7 @@ const fileRoute = require("./fileRoute")
 const eWalletRoute = require("./e-walletRoute")
 const historyRoute = require("./historyRoute")
 const fieldRoute = require("./fieldRoute")
+const transactionsRoute = require("./transactionsRoute")
 const MiddlewareAuth = require("../../middlewares/client/auth")
 module.exports = (app) => {
   app.use('/api/account', accountRoute)
@@ -12,4 +13,5 @@ module.exports = (app) => {
   app.use('/api/e-wallet', eWalletRoute)
   app.use('/api/history', MiddlewareAuth.requireAuth, historyRoute)
   app.use('/api/buypaperlog', MiddlewareAuth.requireAuth, fieldRoute)
+  app.use('/api/transactions', MiddlewareAuth.requireAuth, transactionsRoute)
 }

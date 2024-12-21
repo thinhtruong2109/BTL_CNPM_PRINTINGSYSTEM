@@ -1,9 +1,9 @@
 const express = require("express")
 const router = express.Router()
 const controller = require("../../controller/client/printer_controller")
-
-router.get("/", controller.printerController)
-router.get("/:id", controller.getDetailController)
-router.post("/", controller.postPrinterController)
+const MiddlewareAuth = require("../../middlewares/client/auth")
+router.get("/",MiddlewareAuth.requireAuth, controller.printerController)
+router.get("/:id",MiddlewareAuth.requireAuth, controller.getDetailController)
+router.post("/",MiddlewareAuth.requireAuth, controller.postPrinterController)
 
 module.exports = router
