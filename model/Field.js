@@ -8,6 +8,7 @@ const FieldSchema = new mongoose.Schema({
   transaction: String,
   amount: Number,
   balance: Number,
+  balancePaper: Number,
   historyId: String
 },{
     timestamps: true,

@@ -221,6 +221,7 @@ module.exports.postBuyPaper = async (req, res) => {
       transaction: "Mua giấy",
       amount: balancePaper * 500,
       balance: balanceNew,
+      balancePaper: balancePaper,
       historyId: "",
     });
 
