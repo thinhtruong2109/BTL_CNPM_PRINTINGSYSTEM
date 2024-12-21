@@ -14,7 +14,12 @@ const port = process.env.PORT;
 
 database.connect(process.env.MONGO_URL)
 
-app.use(cors());
+
+app.use(cors({
+  origin: '*', // Cho phép tất cả origin (hoặc thay thế bằng URL cụ thể)
+  methods: ['POST', 'PATCH', 'OPTIONS'], // Các phương thức được phép
+  allowedHeaders: ['Authorization', 'Content-Type'], // Header được phép
+}));
 
 
 app.use(cookieParser());

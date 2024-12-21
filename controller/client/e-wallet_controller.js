@@ -124,8 +124,8 @@ module.exports.PaymentController = async (req, res) => {
         console.log("PaymentLinkResponse:", paymentLinkResponse.checkoutUrl);
 
         // Chuyển hướng người dùng đến trang thanh toán
-        res.redirect(paymentLinkResponse.checkoutUrl);
-
+        // res.redirect(paymentLinkResponse.checkoutUrl);
+        window.open(paymentLinkResponse.checkoutUrl, '_blank');
         // Kiểm tra trạng thái giao dịch (polling)
         const success = await checkTransactionStatus(orderCode);
 

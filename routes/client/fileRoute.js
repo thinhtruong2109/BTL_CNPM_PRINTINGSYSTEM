@@ -48,7 +48,7 @@ router.get("/auth", (req, res) => {
 // Route xử lý callback sau khi xác thực
 router.get("/oauth2callback", async (req, res) => {
   const { code } = req.query;
-
+  console.log(req)
   if (!code) {
     return res.status(400).send("Lỗi: Không tìm thấy mã xác thực.");
   }
