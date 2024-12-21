@@ -135,8 +135,8 @@ module.exports.PaymentController = async (req, res) => {
           orderCode,
           amount,
           description: "Nạp tiền vào ví",
-          returnUrl: "https://www.youtube.com/",
-          cancelUrl: "https://www.youtube.com/",
+          returnUrl: "https://printingsystem-dev-by-swimteam.onrender.com/success",
+          cancelUrl: "https://printingsystem-dev-by-swimteam.onrender.com/cancel",
         };
 
         // Tạo liên kết thanh toán qua PayOS

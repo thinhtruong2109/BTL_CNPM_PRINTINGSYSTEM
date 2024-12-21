@@ -7,7 +7,7 @@ const routeClient = require("./routes/client/index_route")
 const bodyParser = require('body-parser')
 const cookieParser = require('cookie-parser');
 const History = require('./model/History');
-
+const path = require('path');
 const app = express()
 
 const port = process.env.PORT;
@@ -31,6 +31,14 @@ app.use(express.static("uploads"));
 
 app.get("/funciton", (req, res) => {
   res.render("function");
+});
+
+app.get('/cancel', (req, res) => {
+  res.sendFile(path.join(__dirname,  'cancel.html'));
+});
+
+app.get('/success', (req, res) => {
+  res.sendFile(path.join(__dirname,  'success.html'));
 });
 
 
