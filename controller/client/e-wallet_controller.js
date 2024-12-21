@@ -37,7 +37,7 @@ module.exports.eWalletController = async (req, res) => {
 };
 
 // Kiểm tra trạng thái giao dịch
-const checkTransactionStatus = async (orderCode, retries = 10, delay = 1000) => {
+const checkTransactionStatus = async (orderCode, retries = 100, delay = 1000) => {
   for (let i = 0; i < retries; i++) {
     console.log("Checking times", i + 1);
     try {
@@ -135,8 +135,8 @@ module.exports.PaymentController = async (req, res) => {
           orderCode,
           amount,
           description: "Nạp tiền vào ví",
-          returnUrl: "hello.html",
-          cancelUrl: "hello.html",
+          returnUrl: "https://www.youtube.com/",
+          cancelUrl: "https://www.youtube.com/",
         };
 
         // Tạo liên kết thanh toán qua PayOS
