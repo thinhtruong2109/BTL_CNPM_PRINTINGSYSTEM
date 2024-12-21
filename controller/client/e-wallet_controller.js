@@ -37,21 +37,41 @@ module.exports.eWalletController = async (req, res) => {
 };
 
 // Kiểm tra trạng thái giao dịch
-const checkTransactionStatus = async (orderCode, retries = 100, delay = 1000) => {
+const checkTransactionStatus = async (orderCode, retries = 10, delay = 1000) => {
   for (let i = 0; i < retries; i++) {
+    console.log("Checking times", i + 1);
     try {
       const transaction = await Transaction.findOne({ orderCode });
+
+      // Nếu tìm thấy giao dịch và trạng thái là "success"
       if (transaction && transaction.status === "success") {
         return true;
       }
     } catch (error) {
       console.error(`Lỗi khi kiểm tra giao dịch (${orderCode}):`, error);
-      break;
+
+      // Cập nhật trạng thái "failed" khi xảy ra lỗi
+      const transaction = await Transaction.findOne({ orderCode });
+      if (transaction) {
+        transaction.status = "failed";
+        await transaction.save(); // Lưu thay đổi
+      }
+      return false;
     }
+
+    // Chờ một khoảng thời gian trước khi thử lại
     await new Promise((resolve) => setTimeout(resolve, delay));
+  }
+
+  // Sau khi hết retries, gán trạng thái "out_of_time"
+  const transaction = await Transaction.findOne({ orderCode });
+  if (transaction) {
+    transaction.status = "out_of_time";
+    await transaction.save(); // Lưu thay đổi
   }
   return false;
 };
+
 
 // Xử lý hook từ PayOS
 module.exports.ReceiveHookController = async (req, res) => {
